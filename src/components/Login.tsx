@@ -8,7 +8,7 @@ export const Login: FC = () => {
     setError("");
 
     window.location.href =
-      "https://eu-central-1u9v3f2l8i.auth.eu-central-1.amazoncognito.com/login?client_id=3c739ol44kc7ced1pim70p3fab&response_type=token&scope=email+openid+profile&redirect_uri=https%3A%2F%2Fmain.d1dz6uduz5w2pj.amplifyapp.com%2F";
+      "https://eu-central-1u9v3f2l8i.auth.eu-central-1.amazoncognito.com/login?client_id=3c739ol44kc7ced1pim70p3fab&response_type=token&scope=email+openid+profile&redirect_uri=https%3A%2F%2Fmain.d1dz6uduz5w2pj.amplifyapp.com%2Fdashboard";
   };
 
   return (
