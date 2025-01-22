@@ -1,14 +1,18 @@
 import { FC, useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Login: FC = () => {
+  const navigate = useNavigate();
+
   const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
-    window.location =
-      "https://eu-central-1gyd08cruk.auth.eu-central-1.amazoncognito.com/login?client_id=6r1ss73g31giunk4qa93unkqdk&response_type=token&scope=email+openid+profile&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fdashboard";
+    navigate(
+      "https://eu-central-1gyd08cruk.auth.eu-central-1.amazoncognito.com/login?client_id=6r1ss73g31giunk4qa93unkqdk&response_type=token&scope=email+openid+profile&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fdashboard"
+    );
   };
 
   return (

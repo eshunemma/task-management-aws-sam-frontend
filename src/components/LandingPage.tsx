@@ -25,8 +25,8 @@ export const LandingPage: FC = () => {
       return { accessToken, idToken };
     };
 
-    const tokens = extractTokens();
-    const user = verifyToken(tokens.idToken);
+    extractTokens();
+    const user = verifyToken();
 
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
