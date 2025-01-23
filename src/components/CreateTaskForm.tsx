@@ -1,26 +1,28 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { TaskFormData } from "../types";
 import { users } from "../data/mockData";
+import { createTask } from "../utils/api-calls";
 
 export default function CreateTaskForm() {
   const [formData, setFormData] = useState<TaskFormData>({
     title: "",
     description: "",
-    priority: "medium",
+    responsibility: "",
     deadline: "",
-    assigneeId: "",
+    assigned_to: "",
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Create task:", formData);
     setFormData({
       title: "",
       description: "",
-      priority: "medium",
+      responsibility: "medium",
       deadline: "",
-      assigneeId: "",
+      assigned_to: "",
     });
+    await createTask(formData);
   };
 
   const handleChange = (
@@ -72,29 +74,24 @@ export default function CreateTaskForm() {
             className="mt-1 block w-full"
           />
         </div>
+        <div>
+          <label
+            htmlFor="responsibility"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Responsibility
+          </label>
+          <textarea
+            name="responsibility"
+            id="responsibility"
+            rows={3}
+            value={formData.responsibility}
+            onChange={handleChange}
+            className="mt-1 block w-full"
+          />
+        </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          <div>
-            <label
-              htmlFor="priority"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Priority
-            </label>
-            <select
-              name="priority"
-              id="priority"
-              required
-              value={formData.priority}
-              onChange={handleChange}
-              className="mt-1 block w-full"
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-
           <div>
             <label
               htmlFor="deadline"
@@ -121,16 +118,16 @@ export default function CreateTaskForm() {
               Assign To
             </label>
             <select
-              name="assigneeId"
-              id="assigneeId"
+              name="assigned_to"
+              id="assigned_to"
               required
-              value={formData.assigneeId}
+              value={formData.assigned_to}
               onChange={handleChange}
               className="mt-1 block w-full"
             >
               <option value="">Select team member</option>
               {teamMembers.map((user) => (
-                <option key={user.id} value={user.id}>
+                <option key={user.email} value={user.email}>
                   {user.fullName}
                 </option>
               ))}

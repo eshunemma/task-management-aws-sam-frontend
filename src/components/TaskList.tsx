@@ -1,5 +1,7 @@
 import { format } from "date-fns";
 import { tasks } from "../data/mockData";
+import { getAllTasks } from "../utils/api-calls";
+import { useEffect, useState } from "react";
 
 const priorityColors: Record<string, string> = {
   low: "bg-blue-100 text-blue-800",
@@ -14,11 +16,21 @@ const statusColors: Record<string, string> = {
 };
 
 export const TaskList = () => {
+  const [Tasks, SetTasks] = useState([]);
+
+  useEffect(() => {
+    const allData = async () => {
+      const data = await getAllTasks();
+      SetTasks(data.tasks);
+    };
+    allData();
+  }, []);
+
   return (
     <div className="card">
       <div className="divide-y divide-gray-200">
-        {tasks.map((task) => (
-          <div key={task.id} className="py-4 first:pt-0 last:pb-0">
+        {Tasks.map((task: any) => (
+          <div key={task.task_id} className="py-4 first:pt-0 last:pb-0">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-semibold text-gray-900 truncate">
@@ -26,13 +38,7 @@ export const TaskList = () => {
                 </h3>
                 <p className="mt-1 text-sm text-gray-600">{task.description}</p>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      priorityColors[task.priority]
-                    }`}
-                  >
-                    {task.priority}
-                  </span>
+                  <span>{task.responsibility || "Null"}</span>
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       statusColors[task.status]
@@ -48,15 +54,21 @@ export const TaskList = () => {
 
               <div className="ml-4">
                 <select
+                  disabled={task.status === "expired" ? true : false}
+                  defaultValue={"expired"}
                   className="block w-full sm:w-auto"
                   value={task.status}
-                  onChange={(e) => {
-                    console.log("Update task status:", task.id, e.target.value);
-                  }}
+                  // onChange={(e) => {
+                  //   console.log(
+                  //     "Update task status:",
+                  //     task.task_id,
+                  //     e.target.value
+                  //   );
+                  // }}
                 >
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
+                  <option value="open">Open</option>
                   <option value="completed">Completed</option>
+                  <option value="expired">Expired</option>
                 </select>
               </div>
             </div>

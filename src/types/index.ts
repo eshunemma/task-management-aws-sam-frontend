@@ -9,7 +9,7 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  priority: "low" | "medium" | "high";
+  responsibility: string;
   status: "pending" | "in_progress" | "completed";
   deadline: string;
   assigneeId: string;
@@ -18,7 +18,7 @@ export interface Task {
 export interface TaskFormData {
   title: string;
   description: string;
-  priority: "low" | "medium" | "high";
+  responsibility: string;
   deadline: string;
-  assigneeId: string;
+  assigned_to: string;
 }
