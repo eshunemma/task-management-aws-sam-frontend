@@ -14,9 +14,10 @@ import {
 } from "./ui/dialog";
 import { cn } from "../lib/utils";
 
-interface User {
+export interface User {
   name: string;
   "custom:role": string;
+  email: string;
 }
 
 export const Dashboard: FC = () => {
@@ -31,8 +32,6 @@ export const Dashboard: FC = () => {
     navigate("/login");
   };
   const role = user["custom:role"];
-  console.log("+++++++++++user++++++++++++", user);
-  console.log("++++++++++role+++++++++++++", role);
 
   return (
     <div className="min-h-screen bg-gray-50 w-100">
@@ -77,7 +76,7 @@ export const Dashboard: FC = () => {
                   {user?.name}
                 </span>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                  Admin
+                  {role === "admin" ? "Admin" : "Team Member"}
                 </span>
               </div>
               <button

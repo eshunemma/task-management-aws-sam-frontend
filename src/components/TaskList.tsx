@@ -6,25 +6,24 @@ import {
   updateTasksStatus,
 } from "../utils/api-calls";
 import { useEffect, useState } from "react";
+import { User } from "./Dashboard";
 
 const statusColors: Record<string, string> = {
   expired: "bg-gray-100 text-gray-800",
   open: "bg-purple-100 text-purple-800",
   completed: "bg-green-100 text-green-800",
 };
-const role: string = "admin";
 export const TaskList = () => {
   const [Tasks, SetTasks] = useState([]);
-  const user: any = localStorage.getItem("user");
-  const userConvert = JSON.parse(user);
-
+  const user = JSON.parse(localStorage.getItem("user") || "{}") as User;
+  const role = user["custom:role"];
   useEffect(() => {
     const allData = async () => {
       if (role === "admin") {
         const data = await getAllTasks();
         SetTasks(data.tasks);
       } else {
-        const userTasks = await getUserTasks(userConvert.email);
+        const userTasks = await getUserTasks(user.email);
         SetTasks(userTasks.tasks);
       }
     };
@@ -63,9 +62,7 @@ export const TaskList = () => {
               <div className="ml-4">
                 <select
                   disabled={
-                    task.status === "expired" && role === "admin"
-                      ? false
-                      : false
+                    task.status === "expired" && role === "admin" ? false : true
                   }
                   id={task.task_id}
                   defaultValue={"expired"}
