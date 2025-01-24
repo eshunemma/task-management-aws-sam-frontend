@@ -1,6 +1,11 @@
 import { format } from "date-fns";
 import { tasks } from "../data/mockData";
-import { getAllTasks } from "../utils/api-calls";
+import {
+  getAllTasks,
+  getAllUsers,
+  getUserTasks,
+  updateTasksStatus,
+} from "../utils/api-calls";
 import { useEffect, useState } from "react";
 
 const statusColors: Record<string, string> = {
@@ -8,14 +13,21 @@ const statusColors: Record<string, string> = {
   open: "bg-purple-100 text-purple-800",
   completed: "bg-green-100 text-green-800",
 };
-
+const role: string = "admin";
 export const TaskList = () => {
   const [Tasks, SetTasks] = useState([]);
+  const user: any = localStorage.getItem("user");
+  const userConvert = JSON.parse(user);
 
   useEffect(() => {
     const allData = async () => {
-      const data = await getAllTasks();
-      SetTasks(data.tasks);
+      if (role === "admin") {
+        const data = await getAllTasks();
+        SetTasks(data.tasks);
+      } else {
+        const userTasks = await getUserTasks(userConvert.email);
+        SetTasks(userTasks.tasks);
+      }
     };
     allData();
   }, []);
@@ -43,22 +55,27 @@ export const TaskList = () => {
                   <span className="text-sm text-gray-500">
                     Due: {format(new Date(task.deadline), "MMM d, yyyy")}
                   </span>
+                  <span className="text-sm text-gray-500">
+                    Assigned To: {task.assigned_to}
+                  </span>
                 </div>
               </div>
 
               <div className="ml-4">
                 <select
-                  disabled={task.status === "expired" ? true : false}
+                  disabled={
+                    task.status === "expired" && role === "admin"
+                      ? false
+                      : false
+                  }
+                  id={task.task_id}
                   defaultValue={"expired"}
                   className="block w-full sm:w-auto"
                   value={task.status}
-                  // onChange={(e) => {
-                  //   console.log(
-                  //     "Update task status:",
-                  //     task.task_id,
-                  //     e.target.value
-                  //   );
-                  // }}
+                  onChange={async (e) => {
+                    await updateTasksStatus(task.task_id, e.target.value);
+                    location.reload();
+                  }}
                 >
                   <option value="open">Open</option>
                   <option value="completed">Completed</option>

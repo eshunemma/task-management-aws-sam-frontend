@@ -1,9 +1,9 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { TaskFormData } from "../types";
-import { users } from "../data/mockData";
-import { createTask } from "../utils/api-calls";
+import { createTask, getAllUsers } from "../utils/api-calls";
 
 export default function CreateTaskForm() {
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState<TaskFormData>({
     title: "",
     description: "",
@@ -11,6 +11,14 @@ export default function CreateTaskForm() {
     deadline: "",
     assigned_to: "",
   });
+
+  useEffect(() => {
+    const allData = async () => {
+      const data = await getAllUsers();
+      setUsers(data.tasks);
+    };
+    allData();
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,6 +31,7 @@ export default function CreateTaskForm() {
       assigned_to: "",
     });
     await createTask(formData);
+    location.reload();
   };
 
   const handleChange = (
@@ -35,7 +44,7 @@ export default function CreateTaskForm() {
     }));
   };
 
-  const teamMembers = users.filter((user) => user.role === "team_member");
+  // const teamMembers = users.filter((user) => user.role === "team_member");
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -126,9 +135,9 @@ export default function CreateTaskForm() {
               className="mt-1 block w-full"
             >
               <option value="">Select team member</option>
-              {teamMembers.map((user) => (
+              {users.map((user) => (
                 <option key={user.email} value={user.email}>
-                  {user.fullName}
+                  {user.name}
                 </option>
               ))}
             </select>

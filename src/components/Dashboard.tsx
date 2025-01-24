@@ -1,6 +1,5 @@
 import { FC } from "react";
 import CreateTaskForm from "./CreateTaskForm";
-// import TaskList from "./TaskList";
 import { useNavigate } from "react-router-dom";
 import { TaskList } from "./TaskList";
 
@@ -17,6 +16,7 @@ export const Dashboard: FC = () => {
     localStorage.removeItem("id_token");
     navigate("/login");
   };
+  const role = "admin";
 
   return (
     <div className="min-h-screen bg-gray-50 w-100">
@@ -24,9 +24,7 @@ export const Dashboard: FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-indigo-600">
-                Task Management System
-              </h1>
+              <h1 className="text-xl font-bold text-indigo-600">Taskify</h1>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
@@ -59,7 +57,7 @@ export const Dashboard: FC = () => {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Create New Task
             </h2>
-            <div className="card">
+            <div className={`card ${role != "admin" ? "hidden" : ""}`}>
               <CreateTaskForm />
             </div>
           </div>
