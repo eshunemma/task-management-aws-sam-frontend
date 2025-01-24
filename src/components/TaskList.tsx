@@ -2,7 +2,6 @@ import { format } from "date-fns";
 import { tasks } from "../data/mockData";
 import {
   getAllTasks,
-  getAllUsers,
   getUserTasks,
   updateTasksStatus,
 } from "../utils/api-calls";

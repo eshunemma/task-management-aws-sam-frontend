@@ -3,7 +3,7 @@ import { TaskFormData } from "../types";
 import { createTask, getAllUsers } from "../utils/api-calls";
 
 export default function CreateTaskForm() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers]: any = useState([]);
   const [formData, setFormData] = useState<TaskFormData>({
     title: "",
     description: "",
@@ -135,7 +135,7 @@ export default function CreateTaskForm() {
               className="mt-1 block w-full"
             >
               <option value="">Select team member</option>
-              {users.map((user) => (
+              {users.map((user: any) => (
                 <option key={user.email} value={user.email}>
                   {user.name}
                 </option>
