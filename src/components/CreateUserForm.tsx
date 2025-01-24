@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { UserFormData } from "../types";
 import { createUser } from "../utils/api-calls";
 
-export default function CreateUserForm() {
+export default function CreateUserForm({ bright }: { bright: () => void }) {
   const [formData, setFormData] = useState<UserFormData>({
     name: "",
     role: "",
@@ -12,12 +12,13 @@ export default function CreateUserForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Create task:", formData);
+    await createUser(formData);
     setFormData({
       name: "",
       email: "",
       role: "",
     });
-    await createUser(formData);
+    bright();
     location.reload();
   };
 
