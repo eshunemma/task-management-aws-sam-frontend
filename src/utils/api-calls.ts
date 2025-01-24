@@ -49,3 +49,12 @@ export const getAllUsers = async () => {
     console.error("Error fetching data:", error);
   }
 };
+
+export const createUser = async (userData: any) => {
+  try {
+    const response = await axios.post(`${url}/user-onboarding`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting data:", error);
+  }
+};

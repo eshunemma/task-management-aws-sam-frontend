@@ -22,3 +22,8 @@ export interface TaskFormData {
   deadline: string;
   assigned_to: string;
 }
+export interface UserFormData {
+  name: string;
+  email: string;
+  role: string;
+}

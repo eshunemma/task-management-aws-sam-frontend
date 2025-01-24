@@ -1,7 +1,9 @@
 import { FC } from "react";
-import CreateTaskForm from "./CreateTaskForm";
 import { useNavigate } from "react-router-dom";
 import { TaskList } from "./TaskList";
+import CreateTaskForm from "./CreateTaskForm";
+import CreateUserForm from "./CreateUserForm";
+import { getNameInitials } from "../utils/helpers";
 
 interface User {
   name: string;
@@ -14,6 +16,7 @@ export const Dashboard: FC = () => {
   const signOut = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
   const role = "admin";
@@ -30,7 +33,7 @@ export const Dashboard: FC = () => {
               <div className="flex items-center space-x-2">
                 <span className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
                   <span className="text-sm font-medium text-indigo-600">
-                    EE
+                    {getNameInitials(user?.name)}
                   </span>
                 </span>
                 <span className="text-sm font-medium text-gray-700">
@@ -59,6 +62,9 @@ export const Dashboard: FC = () => {
             </h2>
             <div className={`card ${role != "admin" ? "hidden" : ""}`}>
               <CreateTaskForm />
+            </div>
+            <div className={`card ${role != "admin" ? "hidden" : ""}`}>
+              <CreateUserForm />
             </div>
           </div>
 
