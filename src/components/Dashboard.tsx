@@ -93,8 +93,8 @@ export const Dashboard: FC = () => {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0">
           <div className="mb-8">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Create New Task
+            <h2 className={`text-lg font-semibold text-gray-900 mb-4`}>
+              {role === "admin" ? "Create New Task" : "Assigned Tasks"}
             </h2>
             <div className={`card ${role != "admin" ? "hidden" : ""}`}>
               <CreateTaskForm />
